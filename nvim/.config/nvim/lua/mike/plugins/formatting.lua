@@ -21,14 +21,15 @@ return {
                 go = { "gofumpt", "goimports", "golines" }
             },
             format_on_save = {
-                lsp_format = "fallback",
-                timeout_ms = 1000,
+                lsp_fallback = true,
+                async = false,
+                timeout_ms = 500,
             }
         })
 
         vim.keymap.set({ "n", "v" }, "<leader>f", function()
             conform.format({
-                lsp_fallback = 1000,
+                lsp_fallback = true,
                 async = false,
                 timeout_ms = 1000,
             })
