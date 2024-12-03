@@ -8,11 +8,14 @@ padding.y = 10
 decorations = "Buttonless"
 
 # opacity = 0.7
-# blur = true
+blur = true
 
 # option_as_alt = "Both"
 
 [font]
 normal.family = "JetBrainsMonoNL Nerd Font Mono"
+# normal.family = "MesloLGM Nerd Font Mono"
+# normal.family = "BitstromWera Nerd Font Mono"
+# normal.family = "DejaVuSansM Nerd Font Mono"
 
-size = 16
+size = 17

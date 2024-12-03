@@ -33,8 +33,6 @@ return {
                 "lua_ls",
                 "emmet_ls",
                 "templ",
-                "dockerls",
-                "docker_compose_language_service",
                 "gopls",
             },
             -- auto-install configured servers (with lspconfig)

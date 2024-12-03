@@ -44,4 +44,3 @@ opt.iskeyword:append("-")
 opt.guicursor = ""
 
 opt.updatetime = 50
-
