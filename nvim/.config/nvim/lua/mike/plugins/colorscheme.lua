@@ -45,14 +45,14 @@ return {
             transparency = true,
         },
         highlight_groups = {
-            ['@keyword'] = { fg = '#7995AC' },          -- Basic keywords
-            ['@keyword.function'] = { fg = '#7995AC' },  -- 'func' keyword
-            ['@keyword.return'] = { fg = '#7995AC' },    -- 'return' keyword
-            ['@keyword.type'] = { fg = '#7995AC' },      -- 'type' keyword
-            ['@keyword.operator'] = { fg = '#7995AC' },  -- keyword operators
-            ['@keyword.import'] = { fg = '#7995AC' },    -- 'import' keyword
-            ['@keyword.storage'] = { fg = '#7995AC' },   -- 'const', 'var' keywords
-            ['@keyword.repeat'] = { fg = '#7995AC' },    -- 'for', 'while' etc
+            ['@keyword'] = { fg = '#7995AC' },             -- Basic keywords
+            ['@keyword.function'] = { fg = '#7995AC' },    -- 'func' keyword
+            ['@keyword.return'] = { fg = '#7995AC' },      -- 'return' keyword
+            ['@keyword.type'] = { fg = '#7995AC' },        -- 'type' keyword
+            ['@keyword.operator'] = { fg = '#7995AC' },    -- keyword operators
+            ['@keyword.import'] = { fg = '#7995AC' },      -- 'import' keyword
+            ['@keyword.storage'] = { fg = '#7995AC' },     -- 'const', 'var' keywords
+            ['@keyword.repeat'] = { fg = '#7995AC' },      -- 'for', 'while' etc
             ['@keyword.conditional'] = { fg = '#7995AC' }, -- 'if', 'else' etc
 
             ['@function.builtin.lua'] = { italic = false },
