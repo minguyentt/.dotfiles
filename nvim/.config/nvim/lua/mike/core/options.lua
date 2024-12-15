@@ -18,6 +18,7 @@ opt.wrap = false
 -- search settings
 opt.ignorecase = true
 opt.smartcase = true
+
 opt.hlsearch = false
 opt.incsearch = true
 
@@ -38,6 +39,12 @@ opt.clipboard:append("unnamedplus")
 -- split windows
 opt.splitright = true
 opt.splitbelow = true
+
+-- related to undotree plugin
+opt.swapfile = false
+opt.backup = false
+opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+opt.undofile = true
 
 opt.scrolloff = 8
 

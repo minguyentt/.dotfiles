@@ -16,12 +16,12 @@ return {
                 yaml = { "prettier" },
                 markdown = { "prettier" },
                 lua = { "lua-format" },
-                go = { "gofumpt", "goimports", "golines" }
+                go = { "gofmt", "goimports", "golines" }
             },
             format_on_save = {
                 lsp_fallback = true,
                 async = false,
-                timeout_ms = 500,
+                timeout_ms = 1000,
             }
         })
 

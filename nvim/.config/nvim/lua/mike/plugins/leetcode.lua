@@ -1,5 +1,6 @@
 return {
     "kawre/leetcode.nvim",
+    lazy = true,
     build = ":TSUpdate html",
     dependencies = {
         "nvim-telescope/telescope.nvim",
@@ -12,11 +13,11 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     opts = {
-      lang = "golang",
-      injector = {
-      ["golang"] = {
-        before = "package main",
-      }
-    }
+        lang = "golang",
+        injector = {
+            ["golang"] = {
+                before = "package main",
+            }
+        }
     },
 }
