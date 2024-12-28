@@ -1,50 +1,102 @@
 return {
-    "williamboman/mason.nvim",
-    dependencies = {
-        "williamboman/mason-lspconfig.nvim",
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    config = function()
-        -- import mason
-        local mason = require("mason")
+    {
+        "williamboman/mason.nvim",
+        config = function()
+            local mason = require("mason")
 
-        -- import mason-lspconfig
-        local mason_lspconfig = require("mason-lspconfig")
-
-        local mason_tool_installer = require("mason-tool-installer")
-
-        -- enable mason and configure icons
-        mason.setup({
-            ui = {
-                icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗",
+            mason.setup({
+                ui = {
+                    icons = {
+                        package_installed = "✓",
+                        package_pending = "➜",
+                        package_uninstalled = "✗",
+                    },
                 },
-            },
-        })
+            })
+        end,
+    },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = {
+            "williamboman/mason.nvim",
+            "WhoIsSethDaniel/mason-tool-installer.nvim",
+        },
 
-        mason_lspconfig.setup({
-            -- list of servers for mason to install
-            ensure_installed = {
-                "ts_ls",
-                "html",
-                "cssls",
-                "lua_ls",
-                "emmet_ls",
-                "templ",
-                "gopls",
-            },
-            -- auto-install configured servers (with lspconfig)
-            automatic_installation = true, -- not the same as ensure_installed
-        })
+        config = function()
+            -- import mason-lspconfig
+            local mason_lspconfig = require("mason-lspconfig")
+            local mason_tool_installer = require("mason-tool-installer")
 
-        mason_tool_installer.setup({
-            ensure_installed = {
-                "prettier", -- prettier formatter
-                "stylua",   -- lua formatter
-                "eslint_d", -- js linter
-            },
-        })
-    end,
+            mason_lspconfig.setup({
+                -- list of servers for mason to install
+                ensure_installed = {
+                    "ts_ls", -- typescript, javascript LSP
+                    "html",
+                    "lua_ls", -- lua LSP
+                    "templ",
+                    "gopls",
+                    "dockerls",
+                    "docker_compose_language_service",
+                    "clangd", -- C/C++ lSP
+                },
+                -- auto-install configured servers (with lspconfig)
+                automatic_installation = true, -- not the same as ensure_installed
+            })
+
+            mason_tool_installer.setup({
+                ensure_installed = {
+                    "eslint_d", -- js linter
+                },
+            })
+        end,
+    },
 }
+-- {
+--     "williamboman/mason.nvim",
+--     dependencies = {
+--         "williamboman/mason-lspconfig.nvim",
+--         "WhoIsSethDaniel/mason-tool-installer.nvim",
+--     },
+--     config = function()
+--         -- import mason
+--         local mason = require("mason")
+--
+--         -- import mason-lspconfig
+--         local mason_lspconfig = require("mason-lspconfig")
+--
+--         local mason_tool_installer = require("mason-tool-installer")
+--
+--         -- enable mason and configure icons
+--         mason.setup({
+--             ui = {
+--                 icons = {
+--                     package_installed = "✓",
+--                     package_pending = "➜",
+--                     package_uninstalled = "✗",
+--                 },
+--             },
+--         })
+--
+--         mason_lspconfig.setup({
+--             -- list of servers for mason to install
+--             ensure_installed = {
+--                 "ts_ls",  -- typescript, javascript LSP
+--                 "html",
+--                 "lua_ls", -- lua LSP
+--                 "templ",
+--                 "gopls",
+--                 "dockerls",
+--                 "docker_compose_language_service",
+--                 "clangd", -- C/C++ lSP
+--             },
+--             -- auto-install configured servers (with lspconfig)
+--             automatic_installation = true, -- not the same as ensure_installed
+--         })
+--
+--         mason_tool_installer.setup({
+--             ensure_installed = {
+--                 "eslint_d", -- js linter
+--             },
+--         })
+--     end,
+-- }

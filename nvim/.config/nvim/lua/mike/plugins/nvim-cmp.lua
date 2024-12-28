@@ -2,17 +2,23 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
-        "hrsh7th/cmp-buffer",           -- source for text in buffer
-        "hrsh7th/cmp-path",             -- source for file system paths
-        "L3MON4D3/LuaSnip",             -- snippet engine
+        "hrsh7th/cmp-buffer", -- source for text in buffer
+        "hrsh7th/cmp-path",   -- source for file system paths
+        {
+            "L3MON4D3/LuaSnip",
+            version = "v2.*",
+            build = "make install_jsregexp"
+        },                              -- snippet engine
         "saadparwaiz1/cmp_luasnip",     -- for autocompletion
         "rafamadriz/friendly-snippets", -- useful snippets
+        "onsails/lspkind.nvim",
     },
     config = function()
         local cmp = require("cmp")
 
         local luasnip = require("luasnip")
 
+        local lspkind = require("lspkind")
         -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
         require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -41,6 +47,15 @@ return {
                 { name = "buffer" },  -- text within current buffer
                 { name = "path" },    -- file system paths
             }),
+
+            formatting = {
+                expandable_indicator = true,
+                fields = { "abbr", "kind", "menu" },
+                format = lspkind.cmp_format({
+                    maxwidth = 50,
+                    ellipsis_char = "...",
+                }),
+            }
         })
     end,
 }
