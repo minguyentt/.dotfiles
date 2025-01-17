@@ -1,6 +1,6 @@
 return {
     "stevearc/oil.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { "echasnovski/mini.icons" },
     config = function()
         require("oil").setup {
             delete_to_trash = true,

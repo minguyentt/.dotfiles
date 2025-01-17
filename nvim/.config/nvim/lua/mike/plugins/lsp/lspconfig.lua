@@ -1,16 +1,16 @@
 return {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+        "saghen/blink.cmp",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        "hrsh7th/cmp-nvim-lsp",
         {
             "folke/lazydev.nvim",
             ft = "lua",
             opts = {
                 library = {
-                    { path = "luvit-meta/library", words = { "vim%.uv" } },
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" }},
                 },
             },
         },
@@ -21,9 +21,6 @@ return {
 
         -- import mason_lspconfig plugin
         local mason_lspconfig = require("mason-lspconfig")
-
-        -- import cmp-nvim-lsp plugin
-        local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
         local keymap = vim.keymap -- for conciseness
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -73,7 +70,7 @@ return {
         })
 
         -- used to enable autocompletion (assign to every lsp server config)
-        local capabilities = cmp_nvim_lsp.default_capabilities()
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
 
         -- Change the Diagnostic symbols in the sign column (gutter)
         -- (not in youtube nvim video)
@@ -96,11 +93,11 @@ return {
                     filetypes = { "html", "templ" },
                 })
             end,
-            ["gopls"] = function()
-                lspconfig["gopls"].setup({
-                    capabilities = capabilities
-                })
-            end,
+            -- ["gopls"] = function()
+            --     lspconfig["gopls"].setup({
+            --         capabilities = capabilities
+            --     })
+            -- end,
             ["lua_ls"] = function()
                 -- configure lua server (with special settings)
                 lspconfig["lua_ls"].setup({
