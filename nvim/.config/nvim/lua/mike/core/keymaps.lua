@@ -7,7 +7,7 @@ local keymap = vim.keymap -- for conciseness
 -- General Keymaps -------------------
 
 -- exit insert mode
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode" })
+keymap.set("i", "jk", "<ESC>", {})
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
@@ -20,7 +20,7 @@ keymap.set("n", "GG", "GGzz")
 -- delete single character without copying into register
 keymap.set("n", "x", '"_x')
 
--- search-and-replace 
+-- search-and-replace
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- window management

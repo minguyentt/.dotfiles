@@ -4,6 +4,7 @@ require("mike.core.keymaps")
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup('HighlightYank', {})
+local flowstate_group = augroup('flowstate_group', {})
 
 autocmd('TextYankPost', {
     group = yank_group,
@@ -16,20 +17,18 @@ autocmd('TextYankPost', {
     end,
 })
 
-vim.api.nvim_create_autocmd('TermOpen', {
-    group = vim.api.nvim_create_augroup('custom-term-open', {}),
+autocmd({ "BufWritePre" }, {
+    group = flowstate_group,
+    pattern = "*",
+    command = [[%s/\s\+$//e]],
+})
+
+local ft_lsp_group = vim.api.nvim_create_augroup("ft_lsp_group", { clear = true })
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+    pattern = { "docker-compose.yml", "compose.yaml" },
+    group = ft_lsp_group,
     callback = function()
-        vim.opt.number = false
-        vim.opt.relativenumber = false
-        vim.bo.filetype = "terminal"
+        vim.opt.filetype = "yaml.docker-compose"
     end,
 })
 
-vim.keymap.set("n", "<leader>st", function()
-    vim.cmd.new()
-    vim.cmd.wincmd "J"
-    vim.api.nvim_win_set_height(0, 15)
-    vim.cmd.term()
-end)
-
-vim.keymap.set("t", "<C-c>", "<C-\\><C-N>")

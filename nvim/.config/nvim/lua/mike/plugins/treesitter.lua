@@ -23,7 +23,6 @@ return {
                 "dockerfile",
                 "gitignore",
                 "go",
-                "java",
                 "make",
                 "templ",
                 "c",

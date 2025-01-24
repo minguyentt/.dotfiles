@@ -11,7 +11,8 @@ return {
                 javascriptreact = { "prettierd" },
                 typescriptreact = { "prettierd" },
                 lua = { "stylua" },
-                go = { "gofumpt", "goimports", "golines" },
+                go = { "gofmt", "goimports", "golines" },
+                sql = { "sql_formatter" },
             },
         })
 
@@ -19,7 +20,7 @@ return {
             conform.format({
                 lsp_fallback = true,
                 async = false,
-                timeout_ms = 1000,
+                timeout_ms = 500,
             })
         end, { desc = "Format file or range (in visual mode)" })
     end,

@@ -1,6 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
-    -- event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "saghen/blink.cmp",
         "williamboman/mason.nvim",
@@ -10,7 +10,7 @@ return {
             ft = "lua",
             opts = {
                 library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" }},
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                 },
             },
         },
@@ -38,7 +38,7 @@ return {
                 keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
                 opts.desc = "Show LSP definitions"
-                keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+                keymap.set("n", "gd", "<cmd>split | Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
                 opts.desc = "Show LSP implementations"
                 keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
@@ -87,17 +87,27 @@ return {
                     capabilities = capabilities,
                 })
             end,
-            ["html"] = function()
-                lspconfig["html"].setup({
+            ["gopls"] = function()
+                lspconfig["gopls"].setup({
                     capabilities = capabilities,
-                    filetypes = { "html", "templ" },
                 })
             end,
-            -- ["gopls"] = function()
-            --     lspconfig["gopls"].setup({
-            --         capabilities = capabilities
-            --     })
-            -- end,
+            ["dockerls"] = function()
+                lspconfig["dockerls"].setup({
+                    capabilities = capabilities,
+                })
+            end,
+            ["sqls"] = function()
+                lspconfig["sqls"].setup({
+                    capabilities = capabilities,
+                })
+            end,
+            ["emmet_ls"] = function()
+                lspconfig["emmet_ls"].setup({
+                    capabilities = capabilities,
+                    filetype = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
+                })
+            end,
             ["lua_ls"] = function()
                 -- configure lua server (with special settings)
                 lspconfig["lua_ls"].setup({

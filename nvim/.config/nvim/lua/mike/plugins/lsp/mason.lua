@@ -29,13 +29,11 @@ return {
             -- list of servers for mason to install
             ensure_installed = {
                 "ts_ls",  -- typescript, javascript LSP
-                "html",
                 "lua_ls", -- lua LSP
                 "templ",
                 "gopls",
                 "dockerls",
-                "docker_compose_language_service",
-                "clangd", -- C/C++ lSP
+                "emmet_ls",
             },
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
