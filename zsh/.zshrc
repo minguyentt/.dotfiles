@@ -7,8 +7,9 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
 alias reload-zsh="source ~/.zshrc"
-alias edit-zsh="nvim ~/.zshrc"
-alias edit-vim="cd ~/.config/nvim | vim ."
+alias ezsh="nvim ~/.zshrc"
+alias evim="cd ~/.config/nvim | vim ."
+alias lzd='lazydocker'
 
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search)
 
