@@ -1,6 +1,7 @@
 return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
+    -- event = "VeryLazy",
     build = ":TSUpdate",
     config = function()
         -- import nvim-treesitter plugin
@@ -9,26 +10,24 @@ return {
         -- configure treesitter
         treesitter.setup({
             modules = {},
-            ignore_install = {},
+            ignore_install = { "c", "cpp" },
             -- ensure these language parsers are installed
             ensure_installed = {
                 "json",
-                "javascript",
-                "typescript",
                 "yaml",
                 "html",
-                "css",
+                "javascript",
+                "typescript",
                 "lua",
-                "vim",
+                "vimdoc",
                 "dockerfile",
-                "gitignore",
                 "go",
                 "make",
-                "templ",
-                "c",
             },
             sync_install = false,
             auto_install = true,
+
+            incremental_selection = {},
 
             -- enable syntax highlighting
             highlight = {

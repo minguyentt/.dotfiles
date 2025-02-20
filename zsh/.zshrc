@@ -7,8 +7,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
 alias reload-zsh="source ~/.zshrc"
-alias ezsh="nvim ~/.zshrc"
-alias evim="cd ~/.config/nvim | vim ."
+alias edit-zsh="nvim ~/.zshrc"
 alias lzd='lazydocker'
 
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search)
@@ -17,8 +16,8 @@ source $ZSH/oh-my-zsh.sh
 
 # history setup
 HISTFILE=$HOME/.zhistory
-SAVEHIST=1000
-HISTSIZE=999
+SAVEHIST=778
+HISTSIZE=777
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
@@ -34,7 +33,7 @@ PATH="$PATH":"$HOME/.local/scripts/"
 bindkey -s ^f "tmux-sessionizer\n"
 
 # ---- Eza (better ls) -----
-alias ls='eza --icons=always --group-directories-first'
+alias ls='eza --icons=always --no-filesize --no-user --modified --header'
 
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
@@ -75,7 +74,23 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-export PATH=$PATH:$GOPATH/bin
+# github username for packaging GO projects
+username="minguyentt"
+
+gomod() {
+    local project_name=${1:-$(basename $PWD)}
+    go mod init github.com/$username/$project_name
+}
+
+# go exports
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+# java exports
+export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH=$PATH:$JAVA_HOME/bin
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

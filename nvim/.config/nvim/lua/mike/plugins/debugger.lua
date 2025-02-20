@@ -38,15 +38,15 @@ return {
             dapui.close()
         end
 
-        vim.keymap.set("n", "<Leader>bt", ":DapUiToggle<CR>", {})
-        vim.keymap.set("n", "<Leader>bp", dap.toggle_breakpoint, {})
-        vim.keymap.set("n", "<Leader>br", dap.continue, {})
+        vim.keymap.set("n", "<Leader>dt", ":DapUiToggle<CR>", { desc = "toggle debugger ui" })
+        vim.keymap.set("n", "<Leader>dp", dap.toggle_breakpoint, { desc = "toggle breakpoint" })
+        vim.keymap.set("n", "<Leader>dr", dap.continue, { desc = "continue debugger" })
 
         vim.keymap.set("n", "<Leader>bi", function() require('dap').step_into() end)
         vim.keymap.set("n", "<Leader>be", function() require('dapui').eval() end)
 
-        vim.keymap.set("n", "<Leader>bb", function() require('dapui').open({ reset = true }) end)
-        vim.keymap.set("n", "<Leader>bc", function() require('dapui').close() end)
+        vim.keymap.set("n", "<Leader>dd", function() require('dapui').open({ reset = true }) end)
+        vim.keymap.set("n", "<Leader>dc", function() require('dapui').close() end)
 
         vim.fn.sign_define(
             "DapBreakpoint",

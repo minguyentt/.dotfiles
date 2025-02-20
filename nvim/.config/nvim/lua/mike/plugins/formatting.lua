@@ -11,16 +11,15 @@ return {
                 javascriptreact = { "prettierd" },
                 typescriptreact = { "prettierd" },
                 lua = { "stylua" },
-                go = { "gofmt", "goimports", "golines" },
-                sql = { "sql_formatter" },
-            },
+                go = { "gofumpt", "goimports", "golines" },
+            }
         })
 
-        vim.keymap.set({ "n", "v" }, "<leader>f", function()
+        vim.keymap.set({ "n", "v" }, "<leader>F", function()
             conform.format({
                 lsp_fallback = true,
                 async = false,
-                timeout_ms = 500,
+                timeout_ms = 1000,
             })
         end, { desc = "Format file or range (in visual mode)" })
     end,

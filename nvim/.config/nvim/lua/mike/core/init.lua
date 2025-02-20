@@ -22,13 +22,3 @@ autocmd({ "BufWritePre" }, {
     pattern = "*",
     command = [[%s/\s\+$//e]],
 })
-
-local ft_lsp_group = vim.api.nvim_create_augroup("ft_lsp_group", { clear = true })
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-    pattern = { "docker-compose.yml", "compose.yaml" },
-    group = ft_lsp_group,
-    callback = function()
-        vim.opt.filetype = "yaml.docker-compose"
-    end,
-})
-

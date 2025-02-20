@@ -12,15 +12,19 @@ return {
     opts = {
         completion = {
             keyword = { range = 'full' },
+            trigger = { show_on_trigger_character = true },
+
             documentation = {
                 auto_show = true,
                 auto_show_delay_ms = 500,
             },
+
             menu = {
                 draw = {
-                    columns = { { 'kind_icon' }, { 'label', 'label_description', 'kind', gap = 1 } },
+                    columns = { { 'label', 'label_description', 'kind',  gap = 1 }, }
                 },
             },
+
             list = { selection = { preselect = function(ctx) return ctx.mode ~= 'cmdline' end } },
         },
         keymap = {
@@ -45,9 +49,8 @@ return {
                 },
             },
             -- disable cmdline completions
-            -- cmdline = {},
         },
-        signature = { enabled = true },
+        cmdline = { sources = {} }
     },
     opts_extend = { "sources.default" }
 }

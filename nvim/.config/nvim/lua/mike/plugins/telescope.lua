@@ -1,6 +1,7 @@
 return {
     "nvim-telescope/telescope.nvim",
     branch = '0.1.x',
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "nvim-lua/plenary.nvim",
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -10,46 +11,46 @@ return {
         local telescope = require("telescope")
         local actions = require("telescope.actions")
         local layout = require("telescope.actions.layout")
+        local builtin = require("telescope.builtin")
 
         telescope.setup({
             defaults = {
-                path_display = { "smart" },
                 mappings = {
                     i = {
                         ["<C-k>"] = actions.move_selection_previous, -- move to prev result
                         ["<C-j>"] = actions.move_selection_next,     -- move to next result
-                        ["<C-d>"] = actions.delete_buffer,
+                        ["<C-d>"] = actions.preview_scrolling_down,
+                        ["<C-u>"] = actions.preview_scrolling_up,
                         ["<C-p>"] = layout.toggle_preview,
                     },
+
                 },
-                preview = {
-                    hide_on_startup = true, -- hide telescope preview
-                }
+                preview = { hide_on_startup = true },
             },
             pickers = {
-                find_files = {
-                    theme = "dropdown",
-                },
-                grep_string = {
-                    theme = "dropdown",
-                },
-                live_grep = {
-                    theme = "dropdown",
-                },
-                buffers = {
-                    theme = "dropdown",
-                },
-                help_tags = {
-                    theme = "dropdown",
-                }
+                lsp_references = { theme = "ivy" },
+                find_files = { theme = "ivy", },
+                grep_string = { theme = "ivy", },
+                live_grep = { theme = "ivy", },
+                buffers = { theme = "ivy", },
+                diagnostics = { theme = "ivy", hide_on_startup = false },
+                help_tags = { theme = "ivy", }
             }
         })
 
-        vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
-        vim.keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Telescope grep string" })
-        vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
-        vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope buffers" })
-        vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Telescope help tags" })
+        vim.keymap.set("n", "<C-g>", builtin.live_grep, { desc = "Telescope live grep" })
+        vim.keymap.set("n", "<C-b>", builtin.buffers, { desc = "Telescope buffers" })
+
+        vim.keymap.set("n", "<leader>gw", function()
+            local curr_word = vim.fn.expand("<cword>")
+            builtin.grep_string({ search = curr_word })
+        end, { desc = "Telescope grep word under cursor" })
+        vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "Telescope git files" })
+
+        vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
+        vim.keymap.set("n", "<leader>km", builtin.keymaps, { desc = "Telescope keymaps" })
+
+        vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "Telescope help tags" })
 
         telescope.load_extension("fzf")
     end,
