@@ -19,9 +19,8 @@ return {
                     i = {
                         ["<C-k>"] = actions.move_selection_previous, -- move to prev result
                         ["<C-j>"] = actions.move_selection_next,     -- move to next result
-                        ["<C-d>"] = actions.preview_scrolling_down,
-                        ["<C-u>"] = actions.preview_scrolling_up,
                         ["<C-p>"] = layout.toggle_preview,
+                        ["<C-d>"] = actions.delete_buffer,
                     },
 
                 },

@@ -54,3 +54,5 @@ opt.guicursor = ""
 
 opt.updatetime = 50
 
+-- for obsidian plugin
+opt.conceallevel = 1
