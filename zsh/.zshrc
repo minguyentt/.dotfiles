@@ -4,20 +4,19 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME=""
 
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="nvim ~/.zshrc"
 alias lzd='lazydocker'
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search)
-
+plugins=(git zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # history setup
 HISTFILE=$HOME/.zhistory
-SAVEHIST=778
-HISTSIZE=777
+SAVEHIST=1000
+HISTSIZE=999
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
@@ -47,19 +46,6 @@ alias cd="z"
 alias vim="nvim"
 alias gli="golangci-lint"
 
-# the fuck
-eval "$(thefuck --alias)"
-
-# ---- fzf theme ----
-fg="#CBE0F0"
-bg="#011628"
-bg_highlight="#143652"
-purple="#B388FF"
-blue="#06BCE4"
-cyan="#2CF9ED"
-
-export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan}"
-
 # -- use fd instead of fzf --
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -74,13 +60,7 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-# github username for packaging GO projects
-username="minguyentt"
-
-gomod() {
-    local project_name=${1:-$(basename $PWD)}
-    go mod init github.com/$username/$project_name
-}
+# export PS1="%{$fg_bold[magenta]%}%n@%{$reset_color%} %{$fg_bold[blue]%}%~%{$reset_color%} %B»%b "
 
 # go exports
 export GOROOT=/usr/local/go
@@ -88,10 +68,6 @@ export GOPATH=$HOME/go
 
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
-# java exports
-export JAVA_HOME=$(/usr/libexec/java_home)
-export PATH=$PATH:$JAVA_HOME/bin
-
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/fzf-git.sh/fzf-git.sh
+source ~/.config/.zsh/prompt.sh
+

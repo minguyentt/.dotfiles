@@ -1,14 +1,10 @@
 # Custom Ghostty Config
-
-# theme = rose-pine
-# theme = catppuccin-mocha
 background = 000000
 
 shell-integration-features = no-cursor,no-sudo,no-title
-cursor-color = FFFFFF
-cursor-text = 000000
+# cursor-color = FFFFFF
+# cursor-text = 000000
 # cursor-text = FFFFFF
-cursor-style-blink = false
 
 # font
 font-size = 16
@@ -25,7 +21,5 @@ window-padding-y = 4
 window-padding-balance = true
 
 window-width = 222
-window-height = 52
-
-keybind = global:ctrl+-=toggle_quick_terminal
+window-height = 53
 

@@ -47,12 +47,8 @@ opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 opt.undofile = true
 
 opt.scrolloff = 8
-
 opt.iskeyword:append("-")
 
 opt.guicursor = ""
-
 opt.updatetime = 50
 
--- for obsidian plugin
-opt.conceallevel = 1

@@ -12,6 +12,11 @@ return {
         local actions = require("telescope.actions")
         local layout = require("telescope.actions.layout")
         local builtin = require("telescope.builtin")
+        local themes = require("telescope.themes")
+
+        local opts = {
+            layout_config = { width = 0.5 }
+        }
 
         telescope.setup({
             defaults = {
@@ -26,30 +31,21 @@ return {
                 },
                 preview = { hide_on_startup = true },
             },
-            pickers = {
-                lsp_references = { theme = "ivy" },
-                find_files = { theme = "ivy", },
-                grep_string = { theme = "ivy", },
-                live_grep = { theme = "ivy", },
-                buffers = { theme = "ivy", },
-                diagnostics = { theme = "ivy", hide_on_startup = false },
-                help_tags = { theme = "ivy", }
-            }
         })
 
-        vim.keymap.set("n", "<C-g>", builtin.live_grep, { desc = "Telescope live grep" })
-        vim.keymap.set("n", "<C-b>", builtin.buffers, { desc = "Telescope buffers" })
+        vim.keymap.set("n", "<C-g>", function() builtin.live_grep(themes.get_dropdown(opts)) end)
+        vim.keymap.set("n", "<C-b>", function() builtin.buffers(themes.get_dropdown(opts)) end)
 
         vim.keymap.set("n", "<leader>gw", function()
             local curr_word = vim.fn.expand("<cword>")
-            builtin.grep_string({ search = curr_word })
+            builtin.grep_string({ search = curr_word }, themes.get_dropdown(opts))
         end, { desc = "Telescope grep word under cursor" })
-        vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "Telescope git files" })
+        vim.keymap.set("n", "<leader>gf", function() builtin.git_files(themes.get_dropdown(opts)) end)
 
-        vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
-        vim.keymap.set("n", "<leader>km", builtin.keymaps, { desc = "Telescope keymaps" })
+        vim.keymap.set("n", "<leader>ff", function() builtin.find_files(themes.get_dropdown(opts)) end)
+        vim.keymap.set("n", "<leader>km", function() builtin.keymaps(themes.get_dropdown(opts)) end)
 
-        vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "Telescope help tags" })
+        vim.keymap.set("n", "<leader>ht", function() builtin.help_tags() end)
 
         telescope.load_extension("fzf")
     end,

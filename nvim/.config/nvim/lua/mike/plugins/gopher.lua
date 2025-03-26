@@ -1,6 +1,6 @@
 return {
     "olexsmir/gopher.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
     ft = "go",
     dependencies = {
         "nvim-lua/plenary.nvim",

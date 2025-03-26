@@ -19,4 +19,7 @@ require("lazy").setup({ { import = "mike.plugins" }, { import = "mike.plugins.ls
 	change_detection = {
 		notify = false,
 	},
+    -- rocks = {
+    --     hererocks = true,
+    -- }
 })

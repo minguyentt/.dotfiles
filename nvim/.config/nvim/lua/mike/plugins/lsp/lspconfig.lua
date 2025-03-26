@@ -49,8 +49,11 @@ return {
                 opts.desc = "See available code actions"
                 keymap.set({ "n", "v" }, "<leader>cd", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
-                opts.desc = "Show line diagnostics"
-                keymap.set("n", "<leader>d", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show diagnostics for line
+                opts.desc = "Show buffer diagnostic"
+                keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show diagnostics for line
+
+                opts.desc = "Show diagnostic under cursor"
+                keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
                 opts.desc = "Go to previous diagnostic"
                 keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
@@ -92,8 +95,8 @@ return {
                     capabilities = capabilities,
                 })
             end,
-            -- ["jdtls"] = function()
-            --     lspconfig["jdtls"].setup({
+            -- ["pyright"] = function()
+            --     lspconfig["pyright"].setup({
             --         capabilities = capabilities,
             --     })
             -- end,

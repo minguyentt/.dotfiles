@@ -28,11 +28,12 @@ return {
         mason_lspconfig.setup({
             -- list of servers for mason to install
             ensure_installed = {
+                "lua_ls",
                 "ts_ls",  -- typescript, javascript LSP
                 "gopls",
                 "dockerls",
+                "clangd",
                 "emmet_ls",
-                -- "jdtls", -- java LSP
             },
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
@@ -41,6 +42,9 @@ return {
         mason_tool_installer.setup({
             ensure_installed = {
                 "eslint_d", -- js linter
+                "gofumpt",
+                "goimports",
+                "prettierd",
             },
         })
     end,

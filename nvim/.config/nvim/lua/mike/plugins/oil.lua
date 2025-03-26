@@ -14,9 +14,7 @@ return {
                     return file == '.git'
                 end,
             },
-            lsp_file_methods = {
-                autosave_changes = true,
-            }
+            prompt_save_on_select_new_entry = true,
         }
 
         -- open parent directory in current window

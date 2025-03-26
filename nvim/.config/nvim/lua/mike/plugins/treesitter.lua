@@ -1,7 +1,6 @@
 return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
-    -- event = "VeryLazy",
     build = ":TSUpdate",
     config = function()
         -- import nvim-treesitter plugin
@@ -23,6 +22,7 @@ return {
                 "dockerfile",
                 "go",
                 "make",
+                "python",
             },
             sync_install = false,
             auto_install = true,
