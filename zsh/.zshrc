@@ -4,11 +4,16 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME=""
+ZSH_THEME="flazz"
 
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="nvim ~/.zshrc"
 alias lzd='lazydocker'
+alias bsl='brew list --installed-on-request'
+alias vim="nvim"
+
+# chmod +x ~/.config/scripts/install_packages.zsh
+alias install-deps="./.config/scripts/install_packages.zsh"
 
 plugins=(git zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
@@ -43,9 +48,6 @@ eval "$(fzf --zsh)"
 
 alias cd="z"
 
-alias vim="nvim"
-alias gli="golangci-lint"
-
 # -- use fd instead of fzf --
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -60,8 +62,6 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-# export PS1="%{$fg_bold[magenta]%}%n@%{$reset_color%} %{$fg_bold[blue]%}%~%{$reset_color%} %B»%b "
-
 # go exports
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
@@ -69,5 +69,8 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 source ~/fzf-git.sh/fzf-git.sh
-source ~/.config/.zsh/prompt.sh
+# source ~/.config/.zsh/prompt.sh
 
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

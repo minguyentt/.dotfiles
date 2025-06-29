@@ -1,17 +1,3 @@
--- current theme: sublime lime text :)
--- return {
---     "ofirgall/ofirkai.nvim",
---     config = function()
---         require("ofirkai").setup({
---             theme = nil,
---             remove_italics = true,
---         })
---         vim.cmd("colorscheme ofirkai")
---         -- override eof
---         vim.cmd("highlight EndOfBuffer guifg=#fd971f")
---     end,
--- }
-
 -- rose-pine
 -- return {
 --     "rose-pine/neovim",
@@ -29,11 +15,30 @@
 --     end,
 -- }
 
+-- return {
+-- 	"zenbones-theme/zenbones.nvim",
+-- 	-- Optionally install Lush. Allows for more configuration or extending the colorscheme
+-- 	-- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+-- 	-- In Vim, compat mode is turned on as Lush only works in Neovim.
+-- 	dependencies = "rktjmp/lush.nvim",
+-- 	lazy = false,
+-- 	-- you can set set configuration options here
+-- 	config = function()
+-- 		-- vim.g.rosebones_darken_comments = 45
+-- 		vim.g.zenbones_darken_comments = 45
+-- 		-- vim.g.zenbones_darkness = 'warm'
+-- 		vim.cmd.colorscheme('zenbones')
+-- 		-- vim.cmd.colorscheme("rosebones")
+-- 		vim.cmd([[ highlight Normal guibg=#000000 ]])
+-- 	end,
+-- }
+
 -- asivlam theme
 return {
     'asilvam133/rose-pine.nvim',
     name = 'rose-pine',
     lazy = false,
+    priority = 1000,
     opts = {
         styles = {
             bold = true,
@@ -67,3 +72,4 @@ return {
         vim.cmd("colorscheme rose-pine")
     end,
 }
+

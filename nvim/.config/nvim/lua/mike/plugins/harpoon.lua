@@ -24,7 +24,7 @@ return {
                 desc = "Harpoon Quick Menu",
             },
             {
-                "<C-q>",
+                "<C-n>",
                 function()
                     local harpoon = require("harpoon")
                     harpoon:list():prev()

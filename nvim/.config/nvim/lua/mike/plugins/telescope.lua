@@ -1,6 +1,7 @@
 return {
     "nvim-telescope/telescope.nvim",
-    branch = '0.1.x',
+    -- branch = '0.1.x',
+    tag = '0.1.8',
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "nvim-lua/plenary.nvim",
@@ -34,7 +35,7 @@ return {
         })
 
         vim.keymap.set("n", "<C-g>", function() builtin.live_grep(themes.get_dropdown(opts)) end)
-        vim.keymap.set("n", "<C-b>", function() builtin.buffers(themes.get_dropdown(opts)) end)
+        vim.keymap.set("n", "<leader>bb", function() builtin.buffers(themes.get_dropdown(opts)) end)
 
         vim.keymap.set("n", "<leader>gw", function()
             local curr_word = vim.fn.expand("<cword>")

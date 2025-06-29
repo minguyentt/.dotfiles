@@ -36,10 +36,8 @@ default-root-container-orientation = 'auto'
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 # Fallback value (if you omit the key): on-focused-monitor-changed = []
-on-focus-changed = ['move-mouse monitor-lazy-center']
-
-# jank fix for mouse focus on floating windows
-# exec-on-workspace-change = ['/bin/bash', '-c', 'aerospace move-mouse window-lazy-center']
+on-focus-changed = ['move-mouse window-lazy-center'] # Mouse lazily follows any focus (window or workspace)
+# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
@@ -131,12 +129,14 @@ alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
 
 
-alt-shift-q = 'move-node-to-workspace Q'
+# alt-shift-q = 'move-node-to-workspace Q'
+alt-shift-q = 'move-node-to-monitor --focus-follows-window secondary'
 alt-shift-d = 'move-node-to-workspace D'
 alt-shift-v = 'move-node-to-workspace V'
 alt-shift-g = 'move-node-to-workspace G'
 alt-shift-f = 'move-node-to-workspace F'
 alt-shift-b = 'move-node-to-workspace B'
+
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -195,7 +195,7 @@ if.app-id = "com.spotify.client"
 run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
-if.app-id = "md.obsidian"
+if.app-id = "com.jetbrains.intellij"
 run = "move-node-to-workspace D"
 
 [[on-window-detected]]
@@ -210,5 +210,10 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Notes'
+check-further-callbacks = true
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
 check-further-callbacks = true
 run = ['layout floating']

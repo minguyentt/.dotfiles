@@ -1,128 +1,115 @@
 return {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-        "saghen/blink.cmp",
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
-        {
-            "folke/lazydev.nvim",
-            ft = "lua",
-            opts = {
-                library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                },
-            },
-        },
-    },
-    config = function()
-        -- import lspconfig plugin
-        local lspconfig = require("lspconfig")
+	"neovim/nvim-lspconfig",
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
+		-- lua lsp lazydev
+		{
+			"folke/lazydev.nvim",
+			ft = "lua",
+			opts = {
+				library = {
+					"nvim-dap-ui",
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				},
+			},
+		},
+		-- formatter
+		"stevearc/conform.nvim",
+	},
+	config = function()
+		local lspconfig = require("lspconfig")
+		local cmp_lsp = require("cmp_nvim_lsp")
 
-        -- import mason_lspconfig plugin
-        local mason_lspconfig = require("mason-lspconfig")
+		local servers = {
+			"lua_ls",
+			"gopls",
+			"ts_ls",
+		}
 
-        local keymap = vim.keymap -- for conciseness
-        vim.api.nvim_create_autocmd("LspAttach", {
-            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-            callback = function(ev)
-                -- Buffer local mappings.
-                -- See `:help vim.lsp.*` for documentation on any of the below functions
-                local opts = { buffer = ev.buf }
+		vim.lsp.config("gopls", {
+			settings = {
+				["gopls"] = {
+					hints = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						compositeLiteralTypes = true,
+						constantValues = true,
+						functionTypeParameters = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
+					},
+				},
+			},
+		})
 
-                -- set keybinds
-                opts.desc = "Show LSP references"
-                keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+		local lsp_capabilities = vim.tbl_deep_extend(
+			"force",
+			{},
+			vim.lsp.protocol.make_client_capabilities(),
+			cmp_lsp.default_capabilities()
+		)
 
-                opts.desc = "Jump to LSP declaration"
-                keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- show lsp declaration
+		for _, server in ipairs(servers) do
+			lspconfig[server].setup({
+				capabilities = lsp_capabilities,
+			})
+		end
 
-                opts.desc = "Jump to LSP definition"
-                keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+		local keymap = vim.keymap -- for conciseness
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+			callback = function(ev)
+				-- Buffer local mappings.
+				-- See `:help vim.lsp.*` for documentation on any of the below functions
+				--
+				local opts = { buffer = ev.buf }
 
-                opts.desc = "Show LSP implementations"
-                keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+				opts.desc = "Show LSP references"
+				keymap.set("n", "gr", vim.lsp.buf.references, opts)
 
-                opts.desc = "Show LSP type definitions"
-                keymap.set("n", "gt",  "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+				opts.desc = "open lsp definition in new tab"
+				keymap.set("n", "gD", "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", opts) -- show lsp definitions
 
-                opts.desc = "See available code actions"
-                keymap.set({ "n", "v" }, "<leader>cd", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+				opts.desc = "jump to lsp definition"
+				keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- show lsp definitions
 
-                opts.desc = "Show buffer diagnostic"
-                keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show diagnostics for line
+				opts.desc = "Show LSP implementations"
+				keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 
-                opts.desc = "Show diagnostic under cursor"
-                keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				opts.desc = "See available code actions"
+				keymap.set({ "n", "v" }, "<leader>cd", function()
+					vim.lsp.buf.code_action()
+				end) -- see available code actions, in visual mode will apply to selection
 
-                opts.desc = "Go to previous diagnostic"
-                keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				opts.desc = "Show diagnostic under cursor"
+				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
-                opts.desc = "Go to next diagnostic"
-                keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				opts.desc = "Show documentation for what is under cursor"
+				keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+			end,
+		})
 
-                opts.desc = "Show documentation for what is under cursor"
-                keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+		-- diagnostics
+		vim.diagnostic.config({
+			virtual_text = true,
+			virtual_lines = false,
+			float = {
+				focusable = false,
+				style = "minimal",
+				border = "rounded",
+				-- source = "always",
+				header = "",
+				prefix = "",
+			},
+		})
 
-                opts.desc = "Show workspace symbol"
-                keymap.set("n", "gws", vim.lsp.buf.workspace_symbol, opts) -- show documentation for what is under cursor
-
-                opts.desc = "Show signature help"
-                keymap.set("n", "<C-s>", vim.lsp.buf.signature_help, opts)
-            end,
-        })
-
-        -- used to enable autocompletion (assign to every lsp server config)
-        local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-        -- Change the Diagnostic symbols in the sign column (gutter)
-        -- (not in youtube nvim video)
-        local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-        for type, icon in pairs(signs) do
-            local hl = "DiagnosticSign" .. type
-            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-        end
-
-        mason_lspconfig.setup_handlers({
-            -- default handler for installed servers
-            function(server_name)
-                lspconfig[server_name].setup({
-                    capabilities = capabilities,
-                })
-            end,
-            ["gopls"] = function()
-                lspconfig["gopls"].setup({
-                    capabilities = capabilities,
-                })
-            end,
-            -- ["pyright"] = function()
-            --     lspconfig["pyright"].setup({
-            --         capabilities = capabilities,
-            --     })
-            -- end,
-            ["emmet_ls"] = function()
-                lspconfig["emmet_ls"].setup({
-                    capabilities = capabilities,
-                    filetype = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
-                })
-            end,
-            ["lua_ls"] = function()
-                -- configure lua server (with special settings)
-                lspconfig["lua_ls"].setup({
-                    capabilities = capabilities,
-                    settings = {
-                        Lua = {
-                            -- make the language server recognize "vim" global
-                            diagnostics = {
-                                globals = { "vim" },
-                            },
-                            completion = {
-                                callSnippet = "Replace",
-                            }
-                        },
-                    },
-                })
-            end,
-        })
-    end,
+		vim.keymap.set("", "<leader>l", function()
+			local config = vim.diagnostic.config() or {}
+			if config.virtual_text then
+				vim.diagnostic.config({ virtual_text = false, virtual_lines = true })
+			else
+				vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
+			end
+		end, { desc = "Toggle lsp_lines" })
+	end,
 }
