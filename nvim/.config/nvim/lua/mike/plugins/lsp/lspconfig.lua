@@ -209,13 +209,15 @@ return {
 				keymap.set("n", "<leader>dd", function()
 					builtin.diagnostics(themes.get_dropdown())
 				end, { buffer = 0 }) -- show diagnostics for line
+
 				keymap.set("n", "K", function()
 					vim.lsp.buf.hover({
 						max_width = 80,
-						max_height = 40,
-						border = "single",
+						max_height = 50,
+						border = "rounded",
 					})
 				end, { buffer = 0 }) -- show documentation for what is under cursor
+
 				keymap.set("n", "<leader>h", function()
 					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 				end, { buffer = 0 })
