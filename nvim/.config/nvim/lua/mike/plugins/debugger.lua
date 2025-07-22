@@ -119,10 +119,10 @@ return {
 			require("dapui").eval()
 		end, { desc = "eval debugger" })
 
-		vim.keymap.set("n", "<Leader>dd", function()
+		vim.keymap.set("n", "<Leader>do", function()
 			require("dapui").open({ reset = true })
 		end, { desc = "open debugger" })
-		vim.keymap.set("n", "<Leader>dc", function()
+		vim.keymap.set("n", "<Leader>dx", function()
 			require("dapui").close()
 		end, { desc = "close debugger" })
 

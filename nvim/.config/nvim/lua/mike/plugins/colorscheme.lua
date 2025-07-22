@@ -1,20 +1,3 @@
--- rose-pine
--- return {
---     "rose-pine/neovim",
---     config = function()
---         require("rose-pine").setup({
---             disable_italics = true,
---
---             highlight_groups = {
---                 CursorLine = { bg = "none" },
---                 Normal = { bg = "none" },
---                 NormalFloat = { bg = "none" }
---             }
---         })
---         vim.cmd("colorscheme rose-pine")
---     end,
--- }
-
 -- return {
 -- 	"zenbones-theme/zenbones.nvim",
 -- 	-- Optionally install Lush. Allows for more configuration or extending the colorscheme
@@ -72,4 +55,15 @@ return {
         vim.cmd("colorscheme rose-pine")
     end,
 }
+
+-- return {
+--     "sainnhe/gruvbox-material",
+--     lazy = false,
+--     priority = 1000,
+--     config = function()
+--         vim.g.gruvbox_material_background = 'hard'
+--         vim.g.gruvbox_material_better_performance = 1
+--         vim.cmd.colorscheme('gruvbox-material')
+--     end
+-- }
 

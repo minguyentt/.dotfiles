@@ -12,9 +12,6 @@ alias lzd='lazydocker'
 alias bsl='brew list --installed-on-request'
 alias vim="nvim"
 
-# chmod +x ~/.config/scripts/install_packages.zsh
-alias install-deps="./.config/scripts/install_packages.zsh"
-
 plugins=(git zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 

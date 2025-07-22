@@ -1,8 +1,7 @@
 return {
     "nvim-telescope/telescope.nvim",
-    -- branch = '0.1.x',
-    tag = '0.1.8',
-    event = { "BufReadPre", "BufNewFile" },
+    branch = '0.1.x',
+    -- tag = '0.1.8',
     dependencies = {
         "nvim-lua/plenary.nvim",
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -35,17 +34,16 @@ return {
         })
 
         vim.keymap.set("n", "<C-g>", function() builtin.live_grep(themes.get_dropdown(opts)) end)
-        vim.keymap.set("n", "<leader>bb", function() builtin.buffers(themes.get_dropdown(opts)) end)
+        vim.keymap.set("n", "<C-b>", function() builtin.buffers(themes.get_dropdown(opts)) end)
 
         vim.keymap.set("n", "<leader>gw", function()
             local curr_word = vim.fn.expand("<cword>")
             builtin.grep_string({ search = curr_word }, themes.get_dropdown(opts))
         end, { desc = "Telescope grep word under cursor" })
-        vim.keymap.set("n", "<leader>gf", function() builtin.git_files(themes.get_dropdown(opts)) end)
 
         vim.keymap.set("n", "<leader>ff", function() builtin.find_files(themes.get_dropdown(opts)) end)
-        vim.keymap.set("n", "<leader>km", function() builtin.keymaps(themes.get_dropdown(opts)) end)
 
+        vim.keymap.set("n", "<leader>k", function() builtin.keymaps(themes.get_dropdown(opts)) end)
         vim.keymap.set("n", "<leader>ht", function() builtin.help_tags() end)
 
         telescope.load_extension("fzf")

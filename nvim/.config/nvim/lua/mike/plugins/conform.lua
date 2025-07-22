@@ -11,7 +11,7 @@ return {
 				javascriptreact = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				lua = { "stylua" },
-				go = { "gofumpt", "goimports" },
+				go = { "gofumpt", "goimports", "gci", "golines" },
 				json = { "jq" },
 			},
 		})

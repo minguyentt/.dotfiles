@@ -5,6 +5,7 @@
     ],
     "diagnostics.disable": [
         "unused-function",
-        "deprecated"
+        "deprecated",
+        "cast-local-type"
     ]
 }

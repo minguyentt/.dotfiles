@@ -1,5 +1,6 @@
 # Custom Ghostty Config
-background = 070707
+background = 000000
+# background = 0e0d14
 
 shell-integration-features = no-cursor,no-sudo,no-title
 cursor-style-blink = false
@@ -11,18 +12,21 @@ cursor-text = 000000
 font-size = 15
 font-family = JetBrainsMono Nerd Font Mono
 # font-family = losevka Nerd Font Mono
-# font-family = ZedMono Nerd Font Mono
 
-alpha-blending = linear
-bold-is-bright = true
+# alpha-blending: native, linear, linear-corrected
+
+# alpha-blending = linear-corrected
+alpha-blending = native
+# bold-is-bright = true
+font-thicken = true
 
 # window
 macos-titlebar-style = "tabs"
 macos-window-shadow = false
-window-padding-x = 5
-# window-padding-y = 5
+window-padding-x = 15
+window-padding-y = 15
 
-window-width = 235
+window-width = 240
 window-height = 60
 
 mouse-hide-while-typing = true

@@ -1,13 +1,14 @@
 return {
 	"hrsh7th/nvim-cmp",
+	lazy = false,
+	priority = 100,
 	event = "InsertEnter",
 	dependencies = {
 		"hrsh7th/cmp-buffer", -- source for text in buffer
 		"hrsh7th/cmp-path", -- source for file system paths
+		"hrsh7th/cmp-nvim-lsp",
 		{
 			"L3MON4D3/LuaSnip",
-			-- follow latest release.
-			version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
 			-- install jsregexp (optional!).
 			build = "make install_jsregexp",
 		},
@@ -20,7 +21,7 @@ return {
 		local cmp = require("cmp")
 		local lspkind = require("lspkind")
 
-        ---@diagnostic disable: undefined-field
+		---@diagnostic disable: undefined-field
 		local kind_formatter = lspkind.cmp_format({
 			mode = "symbol_text",
 			menu = {
@@ -42,11 +43,19 @@ return {
 			end,
 			group = cmp_group,
 		})
-
 		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
 		require("luasnip.loaders.from_vscode").lazy_load()
 
+		-- for documentation window highlight color
+		vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#151515" })
+
 		cmp.setup({
+			window = {
+				documentation = {
+					border = "rounded",
+					winhighlight = "Normal:CmpNormal",
+				},
+			},
 			completion = {
 				completeopt = "menu,menuone,preview,noselect",
 			},
@@ -63,10 +72,10 @@ return {
 					}),
 					{ "i", "c" }
 				),
-				["<C-n>"] = cmp.mapping.select_next_item({
+				["<C-j>"] = cmp.mapping.select_next_item({
 					behavior = cmp.ConfirmBehavior.Insert,
 				}),
-				["<C-p>"] = cmp.mapping.select_prev_item({
+				["<C-k>"] = cmp.mapping.select_prev_item({
 					behavior = cmp.ConfirmBehavior.Insert,
 				}),
 			}),
@@ -77,7 +86,8 @@ return {
 					group_index = 0,
 				},
 				{ name = "nvim_lsp" },
-				{ name = "luasnip" }, -- snippets
+				{ name = "path" },
+				-- { name = "luasnip" }, -- snippets
 				{ name = "buffer" }, -- text within current buffer
 			}),
 
@@ -96,7 +106,7 @@ return {
 				},
 			},
 
-            ---@diagnostic disable-next-line: missing-fields
+			---@diagnostic disable-next-line: missing-fields
 			formatting = {
 				fields = { "abbr", "kind", "menu" },
 				expandable_indicator = true,
