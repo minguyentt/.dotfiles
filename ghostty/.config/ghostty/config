@@ -13,12 +13,11 @@ font-size = 15
 font-family = JetBrainsMono Nerd Font Mono
 # font-family = losevka Nerd Font Mono
 
-# alpha-blending: native, linear, linear-corrected
-
 # alpha-blending = linear-corrected
-alpha-blending = native
+alpha-blending = linear
+# alpha-blending = native
 # bold-is-bright = true
-font-thicken = true
+# font-thicken = true
 
 # window
 macos-titlebar-style = "tabs"

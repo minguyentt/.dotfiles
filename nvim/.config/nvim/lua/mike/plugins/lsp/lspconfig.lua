@@ -1,6 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
-	event = { "BufReadPre", "BufNewFile" },
+	-- event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		-- lua lsp lazydev
 		{
@@ -8,9 +8,7 @@ return {
 			ft = "lua",
 			opts = {
 				library = {
-					"nvim-dap-ui",
 					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-					{ path = "/usr/share/awesome/lib/", words = { "awesome" } },
 				},
 			},
 		},
@@ -32,35 +30,7 @@ return {
 	},
 
 	config = function()
-		local extend = function(name, key, values)
-			local mod = require(string.format("lspconfig.configs.%s", name))
-			local default = mod.default_config
-			local keys = vim.split(key, ".", { plain = true })
-			while #keys > 0 do
-				local item = table.remove(keys, 1)
-				default = default[item]
-			end
-
-			if vim.islist(default) then
-				for _, value in ipairs(default) do
-					table.insert(values, value)
-				end
-			else
-				for item, value in pairs(default) do
-					if not vim.tbl_contains(values, item) then
-						values[item] = value
-					end
-				end
-			end
-			return values
-		end
-
-		local capabilities = nil
-		if pcall(require, "cmp_nvim_lsp") then
-			capabilities = require("cmp_nvim_lsp").default_capabilities()
-		end
-
-		local ensure_tools_installed = {
+		local tools = {
 			"stylua",
 			"gofumpt",
 			"goimports",
@@ -93,24 +63,22 @@ return {
 				},
 			},
 
-			-- gopls = {
-			--              manual_install = true,
-			-- 	settings = {
-			-- 		gopls = {
-			-- 			hints = {
-			-- 				assignVariableTypes = true,
-			-- 				compositeLiteralFields = true,
-			-- 				compositeLiteralTypes = true,
-			-- 				constantValues = true,
-			-- 				functionTypeParameters = true,
-			-- 				parameterNames = true,
-			-- 				rangeVariableTypes = true,
-			-- 			},
-			-- 		},
-			-- 	},
-			-- },
+			gopls = {
+				settings = {
+					gopls = {
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
+					},
+				},
+			},
 
-            gopls = {},
 			ts_ls = {},
 			jdtls = {},
 
@@ -138,47 +106,28 @@ return {
 			},
 
 			tailwindcss = {},
-
-			dockerls = true,
-			bashls = true,
+			dockerls = {},
+			bashls = {},
 		}
-
-		local server_installs = vim.tbl_filter(function(key)
-			local t = servers[key]
-			if type(t) == "table" then
-				return not t.manual_install
-			else
-				return t
-			end
-		end, vim.tbl_keys(servers))
-
-		vim.list_extend(ensure_tools_installed, server_installs)
-
-		-- run mason & setup tools
-		local lspconfig = require("lspconfig")
 
 		require("mason").setup()
 		require("mason-tool-installer").setup({
-			ensure_installed = ensure_tools_installed,
+			ensure_installed = tools,
 		})
+
 		require("mason-lspconfig").setup({
 			ensure_installed = servers,
 		})
 
-		for name, config in pairs(servers) do
-			if config == true then
-				config = {}
-			end
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			config = vim.tbl_deep_extend("force", {}, {
+		for server, config in pairs(servers) do
+			vim.tbl_deep_extend("force", {}, {
 				capabilities = capabilities,
 			}, config)
 
-			-- lspconfig[name].setup(config)
-			vim.lsp.config(name, config)
+			vim.lsp.config(server, config)
 		end
-
-		local disable_semantic_tokens = {}
 
 		local keymap = vim.keymap -- for conciseness
 		vim.api.nvim_create_autocmd("LspAttach", {
@@ -191,12 +140,6 @@ return {
 				local themes = require("telescope.themes")
 				local builtin = require("telescope.builtin")
 
-				local settings = servers[client.name]
-				if type(settings) ~= "table" then
-					settings = {}
-				end
-
-				vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 				keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 }) -- show lsp definitions
 				keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 }) -- show lsp definitions
 				keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
@@ -221,29 +164,14 @@ return {
 				keymap.set("n", "<leader>h", function()
 					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 				end, { buffer = 0 })
+
 				keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, {})
-
-				local filetype = vim.bo[bufnr].filetype
-				if disable_semantic_tokens[filetype] then
-					client.server_capabilities.semanticTokensProvider = nil
-				end
-
-				if settings.server_capabilities then
-					for k, v in pairs(settings.server_capabilities) do
-						if v == vim.NIL then
-							---@diagnostic disable-next-line: cast-local-type
-							v = nil
-						end
-
-						client.server_capabilities[k] = v
-					end
-				end
 			end,
 		})
 
 		-- diagnostics
 		vim.diagnostic.config({
-			update_in_insert = false,
+            update_in_insert = false,
 			virtual_text = true,
 			virtual_lines = false,
 
@@ -251,7 +179,7 @@ return {
 				focusable = false,
 				style = "minimal",
 				border = "rounded",
-				-- source = "always",
+				source = "always",
 				header = "",
 				prefix = "",
 			},

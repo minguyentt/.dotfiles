@@ -9,19 +9,6 @@ return {
 	},
 	opts = {
 		-- configuration goes here
-		-- plugins =1 {
-		-- 	non_standalone = true,
-		-- },
-		lang = {
-            "go",
-            "java",
-        },
-		injector = {
-			["go"] = {
-				imports = function()
-					return { "package main" }
-				end,
-			},
-		},
+		lang = { "go" },
 	},
 }
