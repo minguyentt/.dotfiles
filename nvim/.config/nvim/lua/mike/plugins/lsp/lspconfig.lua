@@ -1,7 +1,8 @@
 return {
 	"neovim/nvim-lspconfig",
-	-- event = { "BufReadPre", "BufNewFile" },
+	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
+		-- "hrsh7th/nvim-cmp",
 		-- lua lsp lazydev
 		{
 			"folke/lazydev.nvim",
@@ -63,21 +64,22 @@ return {
 				},
 			},
 
-			gopls = {
-				settings = {
-					gopls = {
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-					},
-				},
-			},
+			-- gopls = {
+			-- 	settings = {
+			-- 		gopls = {
+			-- 			hints = {
+			-- 				assignVariableTypes = true,
+			-- 				compositeLiteralFields = true,
+			-- 				compositeLiteralTypes = true,
+			-- 				constantValues = true,
+			-- 				functionTypeParameters = true,
+			-- 				parameterNames = true,
+			-- 				rangeVariableTypes = true,
+			-- 			},
+			-- 		},
+			-- 	},
+			-- },
+            gopls = {},
 
 			ts_ls = {},
 			jdtls = {},
@@ -107,7 +109,6 @@ return {
 
 			tailwindcss = {},
 			dockerls = {},
-			bashls = {},
 		}
 
 		require("mason").setup()
@@ -144,14 +145,9 @@ return {
 				keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 }) -- show lsp definitions
 				keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
 				keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
-				keymap.set("n", "<leader>gs", builtin.lsp_document_symbols, { buffer = 0 })
-				keymap.set({ "n", "v" }, "<leader>cd", function()
-					vim.lsp.buf.code_action()
-				end) -- see available code actions, in visual mode will apply to selection
+				keymap.set({ "n", "v" }, "<leader>cd", function() vim.lsp.buf.code_action() end) -- see available code actions, in visual mode will apply to selection
 				keymap.set("n", "<leader>d", vim.diagnostic.open_float, { buffer = 0 }) -- show diagnostics for line
-				keymap.set("n", "<leader>dd", function()
-					builtin.diagnostics(themes.get_dropdown())
-				end, { buffer = 0 }) -- show diagnostics for line
+				keymap.set("n", "<leader>dd", function() builtin.diagnostics(themes.get_dropdown()) end, { buffer = 0 }) -- show diagnostics for line
 
 				keymap.set("n", "K", function()
 					vim.lsp.buf.hover({
@@ -171,7 +167,7 @@ return {
 
 		-- diagnostics
 		vim.diagnostic.config({
-            update_in_insert = false,
+			update_in_insert = false,
 			virtual_text = true,
 			virtual_lines = false,
 
@@ -179,7 +175,6 @@ return {
 				focusable = false,
 				style = "minimal",
 				border = "rounded",
-				source = "always",
 				header = "",
 				prefix = "",
 			},

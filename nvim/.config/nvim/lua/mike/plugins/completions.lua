@@ -2,52 +2,43 @@ return {
 	"hrsh7th/nvim-cmp",
 	lazy = false,
 	priority = 100,
-	-- event = "InsertEnter",
+	-- event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-buffer", -- source for text in buffer
-		"hrsh7th/cmp-path", -- source for file system paths
+		"onsails/lspkind.nvim", -- vs-code like pictograms
 		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-path", -- source for file system paths
+		"hrsh7th/cmp-buffer", -- source for text in buffer
 		{
 			"L3MON4D3/LuaSnip",
 			-- install jsregexp (optional!).
 			build = "make install_jsregexp",
 		},
 		"saadparwaiz1/cmp_luasnip", -- for autocompletion
-		"rafamadriz/friendly-snippets", -- useful snippets
-		"onsails/lspkind.nvim", -- vs-code like pictograms
 		"roobert/tailwindcss-colorizer-cmp.nvim",
 	},
 	config = function()
 		local cmp = require("cmp")
 		local lspkind = require("lspkind")
 
-		---@diagnostic disable: undefined-field
 		local kind_formatter = lspkind.cmp_format({
 			mode = "symbol_text",
 			menu = {
 				nvim_lsp = "[LSP]",
-				nvim_lua = "[LUA]",
-				luasnip = "[SNIP]",
-				buffer = "[BUF]",
-				path = "[PATH]",
-				treesitter = "[TREE]",
-				["vim-dadbod-completion"] = "[DB]",
+				nvim_lua = "[api]",
+				luasnip = "[snip]",
+				buffer = "[buf]",
+				path = "[path]",
 			},
 		})
 
-		local cmp_group = vim.api.nvim_create_augroup("dadbod-completion", { clear = true })
-		vim.api.nvim_create_autocmd("FileType", {
-			pattern = { "sql" },
-			callback = function()
-				cmp.setup.buffer({ soruces = { { name = "vim-dadbod-completion" } } })
-			end,
-			group = cmp_group,
+		require("tailwindcss-colorizer-cmp").setup({
+			color_sqaure_width = 2,
 		})
-		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-		require("luasnip.loaders.from_vscode").lazy_load()
 
 		-- for documentation window highlight color
-		vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#151515" })
+		vim.api.nvim_set_hl(0, "CmpNormal", { bg = "#26233a" })
+
+		vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 		cmp.setup({
 			window = {
@@ -56,8 +47,12 @@ return {
 					winhighlight = "Normal:CmpNormal",
 				},
 			},
+			-- completion = {
+			-- 	completeopt = "menu,menuone,preview,noselect",
+			-- },
+
 			completion = {
-				completeopt = "menu,menuone,preview,noselect",
+				completeopt = "menu,menuone,noinsert",
 			},
 			snippet = { -- configure how nvim-cmp interacts with snippet engine
 				expand = function(args)
@@ -86,12 +81,11 @@ return {
 					group_index = 0,
 				},
 				{ name = "nvim_lsp" },
-				{ name = "path" },
 				-- { name = "luasnip" }, -- snippets
+				{ name = "path" },
 				{ name = "buffer" }, -- text within current buffer
 			}),
 
-			-- sorting
 			sorting = {
 				priority_weight = 2,
 				comparators = {
@@ -119,6 +113,14 @@ return {
 
 					return vim_item
 				end,
+			},
+		})
+
+		-- Setup up vim-dadbod
+		cmp.setup.filetype({ "sql" }, {
+			sources = {
+				{ name = "vim-dadbod-completion" },
+				{ name = "buffer" },
 			},
 		})
 	end,

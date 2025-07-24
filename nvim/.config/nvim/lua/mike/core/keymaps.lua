@@ -48,8 +48,8 @@ keymap.set("n", "<leader>Y", [["+Y]])
 -- keymap.set("n", "N", "Nzzzv")
 
 -- get these buffers OUT
-keymap.set("n", "<leader>c", "<cmd>bp|bd#<CR>")
--- keymap.set("n", "<leader>x", "<cmd>:bd<CR>", {})              -- close current tab
+-- keymap.set("n", "<leader>c", "<cmd>bp|bd#<CR>")
+keymap.set("n", "<leader>x", "<cmd>:bd<CR>", {})              -- close current tab
 
 -- done w/ lyfe
 keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
