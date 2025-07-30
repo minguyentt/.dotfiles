@@ -2,7 +2,7 @@ return {
 	"hrsh7th/nvim-cmp",
 	lazy = false,
 	priority = 100,
-	-- event = { "BufReadPre", "BufNewFile" },
+	event = "InsertEnter",
 	dependencies = {
 		"onsails/lspkind.nvim", -- vs-code like pictograms
 		"hrsh7th/cmp-nvim-lsp",
@@ -54,6 +54,7 @@ return {
 			completion = {
 				completeopt = "menu,menuone,noinsert",
 			},
+
 			snippet = { -- configure how nvim-cmp interacts with snippet engine
 				expand = function(args)
 					vim.snippet.expand(args.body)
@@ -62,17 +63,20 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				["<C-y>"] = cmp.mapping(
 					cmp.mapping.confirm({
+                        behavior = cmp.ConfirmBehavior.Insert,
 						select = true,
-						behavior = cmp.ConfirmBehavior.Insert,
 					}),
 					{ "i", "c" }
 				),
+
 				["<C-j>"] = cmp.mapping.select_next_item({
 					behavior = cmp.ConfirmBehavior.Insert,
 				}),
+
 				["<C-k>"] = cmp.mapping.select_prev_item({
 					behavior = cmp.ConfirmBehavior.Insert,
 				}),
+
 			}),
 			-- sources for autocompletion
 			sources = cmp.config.sources({

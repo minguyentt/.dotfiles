@@ -35,7 +35,6 @@ return {
 			"stylua",
 			"gofumpt",
 			"goimports",
-			"gci",
 			"prettierd",
 			"go-debug-adapter",
 			"eslint_d",
@@ -64,22 +63,22 @@ return {
 				},
 			},
 
-			-- gopls = {
-			-- 	settings = {
-			-- 		gopls = {
-			-- 			hints = {
-			-- 				assignVariableTypes = true,
-			-- 				compositeLiteralFields = true,
-			-- 				compositeLiteralTypes = true,
-			-- 				constantValues = true,
-			-- 				functionTypeParameters = true,
-			-- 				parameterNames = true,
-			-- 				rangeVariableTypes = true,
-			-- 			},
-			-- 		},
-			-- 	},
-			-- },
-            gopls = {},
+			gopls = {
+				settings = {
+					gopls = {
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
+					},
+				},
+			},
+			-- gopls = {},
 
 			ts_ls = {},
 			jdtls = {},
@@ -118,6 +117,8 @@ return {
 
 		require("mason-lspconfig").setup({
 			ensure_installed = servers,
+			automatic_installation = false,
+			automatic_setup = false,
 		})
 
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -141,13 +142,23 @@ return {
 				local themes = require("telescope.themes")
 				local builtin = require("telescope.builtin")
 
+				local settings = servers[client.name]
+				if type(settings) ~= "table" then
+					settings = {}
+				end
+
+				vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 				keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 }) -- show lsp definitions
 				keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 }) -- show lsp definitions
 				keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
 				keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
-				keymap.set({ "n", "v" }, "<leader>cd", function() vim.lsp.buf.code_action() end) -- see available code actions, in visual mode will apply to selection
+				keymap.set({ "n", "v" }, "<leader>cd", function()
+					vim.lsp.buf.code_action()
+				end) -- see available code actions, in visual mode will apply to selection
 				keymap.set("n", "<leader>d", vim.diagnostic.open_float, { buffer = 0 }) -- show diagnostics for line
-				keymap.set("n", "<leader>dd", function() builtin.diagnostics(themes.get_dropdown()) end, { buffer = 0 }) -- show diagnostics for line
+				keymap.set("n", "<leader>dd", function()
+					builtin.diagnostics(themes.get_dropdown())
+				end, { buffer = 0 }) -- show diagnostics for line
 
 				keymap.set("n", "K", function()
 					vim.lsp.buf.hover({
@@ -162,15 +173,22 @@ return {
 				end, { buffer = 0 })
 
 				keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, {})
+
+				-- if settings.server_capabilities then
+				-- 	for k, v in pairs(settings.server_capabilities) do
+				-- 		if v == vim.NIL then
+				-- 			---@diagnostic disable-next-line: cast-local-type
+				-- 			v = nil
+				-- 		end
+				--
+				-- 		client.server_capabilities[k] = v
+				-- 	end
+				-- end
 			end,
 		})
 
 		-- diagnostics
 		vim.diagnostic.config({
-			update_in_insert = false,
-			virtual_text = true,
-			virtual_lines = false,
-
 			float = {
 				focusable = false,
 				style = "minimal",

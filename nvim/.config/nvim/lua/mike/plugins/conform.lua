@@ -6,12 +6,12 @@ return {
 
 		conform.setup({
 			formatters_by_ft = {
-				javascript = { "prettierd" },
-				typescript = { "prettierd" },
-				javascriptreact = { "prettierd" },
-				typescriptreact = { "prettierd" },
+				-- javascript = { "prettierd" },
+				-- typescript = { "prettierd" },
+				-- javascriptreact = { "prettierd" },
+				-- typescriptreact = { "prettierd" },
 				lua = { "stylua" },
-				go = { "gofumpt", "goimports", "gci", "golines" },
+				go = { "gofumpt", "goimports", "golines" },
 				json = { "jq" },
 			},
 		})
