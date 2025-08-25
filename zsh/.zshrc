@@ -9,7 +9,6 @@ ZSH_THEME="flazz"
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="nvim ~/.zshrc"
 alias lzd='lazydocker'
-alias bsl='brew list --installed-on-request'
 alias vim="nvim"
 
 plugins=(git zsh-syntax-highlighting)
@@ -34,7 +33,7 @@ PATH="$PATH":"$HOME/.local/scripts/"
 bindkey -s ^f "tmux-sessionizer\n"
 
 # ---- Eza (better ls) -----
-alias ls='eza --icons=always --no-filesize --no-user --modified --header'
+alias ls="eza --color=always --long --git --git-repos --no-filesize --icons=always --no-time --no-user --no-permissions"
 
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"

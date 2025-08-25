@@ -9,18 +9,36 @@ return {
 		layouts = {
 			{
 				elements = {
-					{ id = "console", size = 0.5 },
-					{ id = "repl", size = 0.5 },
+					{
+						id = "scopes",
+						size = 0.25,
+					},
+					{
+						id = "breakpoints",
+						size = 0.25,
+					},
+					{
+						id = "stacks",
+						size = 0.25,
+					},
+					{
+						id = "watches",
+						size = 0.25,
+					},
 				},
 				position = "left",
 				size = 50,
 			},
 			{
 				elements = {
-					{ id = "scopes", size = 0.50 },
-					{ id = "breakpoints", size = 0.20 },
-					{ id = "stacks", size = 0.15 },
-					{ id = "watches", size = 0.15 },
+					{
+						id = "repl",
+						size = 0.5,
+					},
+					{
+						id = "console",
+						size = 0.5,
+					},
 				},
 				position = "bottom",
 				size = 15,
@@ -32,7 +50,7 @@ return {
 		local dapui = require("dapui")
 		local dap_go = require("dap-go")
 
-        require("dapui").setup(opts)
+		require("dapui").setup(opts)
 		dap_go.setup()
 
 		-- For One
@@ -72,7 +90,7 @@ return {
 			port = "2346",
 		}
 
-		-- java dab configs
+		-- java dap configs
 		dap.configurations.java = {
 			{
 				name = "Debug Launch (2GB)",
@@ -96,7 +114,6 @@ return {
 			},
 		}
 
-
 		dap.listeners.before.attach.dapui_config = function()
 			dapui.open()
 		end
@@ -110,34 +127,47 @@ return {
 			dapui.close()
 		end
 
-		vim.keymap.set("n", "<Leader>db", dap.toggle_breakpoint, { desc = "toggle breakpoint" })
-
-		vim.keymap.set("n", "<Leader>dr", dap.continue, { desc = "continue debugger" })
-		vim.keymap.set("n", "<Leader>dR", dap.restart, { desc = "restart debugger session" })
-
-		vim.keymap.set("n", "<Leader>de", function()
-			require("dapui").eval()
-		end, { desc = "eval debugger" })
-
 		vim.keymap.set("n", "<Leader>do", function()
 			require("dapui").open({ reset = true })
 		end, { desc = "open debugger" })
-		vim.keymap.set("n", "<Leader>dx", function()
+		vim.keymap.set("n", "<Leader>dO", function()
 			require("dapui").close()
 		end, { desc = "close debugger" })
+
+		vim.keymap.set("n", "<Leader>b", function()
+			require("dap").toggle_breakpoint()
+		end)
+		vim.keymap.set("n", "<Leader>B", function()
+			require("dap").set_breakpoint()
+		end)
+		vim.keymap.set("n", "<Leader>lp", function()
+			require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+		end)
+		vim.keymap.set("n", "<Leader>dr", function()
+			require("dap").continue()
+		end)
+		vim.keymap.set("n", "<Leader>dl", function()
+			require("dap").run_last()
+		end)
+		vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
+			require("dap.ui.widgets").hover()
+		end)
+		vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
+			require("dap.ui.widgets").preview()
+		end)
 
 		vim.keymap.set("n", "<F1>", function()
 			require("dap").step_into()
 		end, { desc = "step into debugger" })
 		vim.keymap.set("n", "<F2>", function()
-			require("dap").step_over()
-		end, { desc = "step over debugger" })
-		vim.keymap.set("n", "<F3>", function()
 			require("dap").step_out()
 		end, { desc = "step out debugger" })
-		vim.keymap.set("n", "<F4>", function()
+		vim.keymap.set("n", "<F3>", function()
 			require("dap").step_back()
 		end, { desc = "step back debugger" })
+		vim.keymap.set("n", "<F4>", function()
+			require("dap").step_over()
+		end, { desc = "step over debugger" })
 
 		vim.fn.sign_define(
 			"DapBreakpoint",

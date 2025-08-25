@@ -68,7 +68,7 @@ outer.right =      5
 
 # ==================== WORKSPACE MONITOR FORCE ===================
 [workspace-to-monitor-force-assignment]
-M = 'secondary'
+P = 'secondary'
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -116,7 +116,7 @@ alt-3 = 'workspace 3' # music
 
 
 # dev workspace
-alt-m = 'workspace M' # secondary monitor
+alt-p = 'workspace P' # secondary monitor
 alt-d = 'workspace D' # Obsidian
 alt-v = 'workspace V'
 alt-g = 'workspace G' # GAMES hehe
@@ -129,7 +129,7 @@ alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
 
 
-alt-shift-m = 'move-node-to-monitor --focus-follows-window secondary'
+alt-shift-p = 'move-node-to-monitor --focus-follows-window secondary'
 alt-shift-d = 'move-node-to-workspace D'
 alt-shift-v = 'move-node-to-workspace V'
 alt-shift-g = 'move-node-to-workspace G'
@@ -186,16 +186,16 @@ if.app-id = "com.google.Chrome"
 run = "move-node-to-workspace V"
 
 [[on-window-detected]]
-if.app-id = "app.zen-browser.zen"
-run = "move-node-to-workspace V"
-
-[[on-window-detected]]
 if.app-id = "notion.id"
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
 if.app-id = "com.spotify.client"
-run = "move-node-to-workspace 3"
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = "com.hnc.Discord"
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'

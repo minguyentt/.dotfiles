@@ -1,6 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
-	event = { "BufReadPre", "BufNewFile" },
+    event = {"BufReadPre", "BufNewFile"},
 	dependencies = {
 		-- "hrsh7th/nvim-cmp",
 		-- lua lsp lazydev
@@ -22,21 +22,40 @@ return {
 		"stevearc/conform.nvim",
 
 		{ "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
-
-		-- LSP notification UI
-		{
-			"j-hui/fidget.nvim",
-			opts = {},
-		},
 	},
 
 	config = function()
+		local extend = function(name, key, values)
+			local mod = require(string.format("lspconfig.configs.%s", name))
+			local default = mod.default_config
+			local keys = vim.split(key, ".", { plain = true })
+			while #keys > 0 do
+				local item = table.remove(keys, 1)
+				default = default[item]
+			end
+
+			if vim.islist(default) then
+				for _, value in ipairs(default) do
+					table.insert(values, value)
+				end
+			else
+				for item, value in pairs(default) do
+					if not vim.tbl_contains(values, item) then
+						values[item] = value
+					end
+				end
+			end
+			return values
+		end
+
 		local tools = {
-			"stylua",
 			"gofumpt",
 			"goimports",
-			"prettierd",
+			"gotests",
 			"go-debug-adapter",
+
+			"stylua",
+			"prettierd",
 			"eslint_d",
 		}
 
@@ -44,20 +63,12 @@ return {
 			lua_ls = {
 				settings = {
 					Lua = {
-						format = {
-							enable = true,
-							defaultConfig = {
-								indent_style = "space",
-								indent_size = "2",
-							},
+						diagnostics = {
+							-- Get the language server to recognize the `vim` global
+							globals = { "vim" },
 						},
-
 						completion = {
 							callSnippet = "Replace",
-							enable = true,
-						},
-						diagnostics = {
-							globals = { "vim" },
 						},
 					},
 				},
@@ -110,6 +121,15 @@ return {
 			dockerls = {},
 		}
 
+		local servers_to_install = vim.tbl_filter(function(key)
+			local t = servers[key]
+			if type(t) == "table" then
+				return not t.manual_install
+			else
+				return t
+			end
+		end, vim.tbl_keys(servers))
+
 		require("mason").setup()
 		require("mason-tool-installer").setup({
 			ensure_installed = tools,
@@ -120,6 +140,8 @@ return {
 			automatic_installation = false,
 			automatic_setup = false,
 		})
+
+		vim.list_extend(tools, servers_to_install)
 
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -150,23 +172,30 @@ return {
 				vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 				keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 }) -- show lsp definitions
 				keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 }) -- show lsp definitions
-				keymap.set("n", "gr", vim.lsp.buf.references, { buffer = 0 })
+				keymap.set("n", "grr", vim.lsp.buf.references, { buffer = 0 })
 				keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
+
+                -- see available code actions, in visual mode will apply to selection
 				keymap.set({ "n", "v" }, "<leader>cd", function()
 					vim.lsp.buf.code_action()
-				end) -- see available code actions, in visual mode will apply to selection
-				keymap.set("n", "<leader>d", vim.diagnostic.open_float, { buffer = 0 }) -- show diagnostics for line
-				keymap.set("n", "<leader>dd", function()
-					builtin.diagnostics(themes.get_dropdown())
-				end, { buffer = 0 }) -- show diagnostics for line
+				end)
 
+                -- show diagnostics for line
+				keymap.set("n", "<leader>d", vim.diagnostic.open_float, { buffer = 0 })
+
+                -- workspace diagnostics
+				keymap.set("n", "<leader>wd", function()
+					builtin.diagnostics(themes.get_dropdown())
+				end, { buffer = 0 })
+
+                -- show diagnostics for line
 				keymap.set("n", "K", function()
 					vim.lsp.buf.hover({
 						max_width = 80,
 						max_height = 50,
 						border = "rounded",
 					})
-				end, { buffer = 0 }) -- show documentation for what is under cursor
+				end, { buffer = 0 })
 
 				keymap.set("n", "<leader>h", function()
 					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -174,21 +203,22 @@ return {
 
 				keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, {})
 
-				-- if settings.server_capabilities then
-				-- 	for k, v in pairs(settings.server_capabilities) do
-				-- 		if v == vim.NIL then
-				-- 			---@diagnostic disable-next-line: cast-local-type
-				-- 			v = nil
-				-- 		end
-				--
-				-- 		client.server_capabilities[k] = v
-				-- 	end
-				-- end
+				if settings.server_capabilities then
+					for k, v in pairs(settings.server_capabilities) do
+						if v == vim.NIL then
+							---@diagnostic disable-next-line: cast-local-type
+							v = nil
+						end
+
+						client.server_capabilities[k] = v
+					end
+				end
 			end,
 		})
 
 		-- diagnostics
 		vim.diagnostic.config({
+			virtual_text = false,
 			float = {
 				focusable = false,
 				style = "minimal",
@@ -213,9 +243,9 @@ return {
 		vim.keymap.set("", "<leader>l", function()
 			local config = vim.diagnostic.config() or {}
 			if config.virtual_text then
-				vim.diagnostic.config({ virtual_text = false, virtual_lines = true })
+				vim.diagnostic.config({ virtual_text = false })
 			else
-				vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
+				vim.diagnostic.config({ virtual_text = true })
 			end
 		end, { desc = "Toggle lsp_lines" })
 	end,

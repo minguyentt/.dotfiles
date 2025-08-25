@@ -9,6 +9,6 @@ return {
 	},
 	opts = {
 		-- configuration goes here
-		lang = { "go" },
+		lang = {},
 	},
 }

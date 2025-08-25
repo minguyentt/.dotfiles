@@ -1,7 +1,9 @@
 return {
 	"nvim-java/nvim-java",
+    event = { "BufReadPre", "BufNewFile" },
 	ft = "java",
 	dependencies = {
+
 		{
 			"neovim/nvim-lspconfig",
 			opts = {
@@ -21,6 +23,7 @@ return {
 						},
 					},
 				},
+
 				setup = {
 					jdtls = function()
 						require("java").setup({

@@ -1,4 +1,13 @@
 return {
-	"stevearc/dressing.nvim",
-	event = "VeryLazy",
+	-- {
+	-- 	"windwp/nvim-autopairs",
+	-- 	event = "InsertEnter",
+	-- 	config = true,
+	-- 	-- use opts = {} for passing setup options
+	-- 	-- this is equivalent to setup({}) function
+	-- },
+	{
+		"stevearc/dressing.nvim",
+		event = "VeryLazy",
+	},
 }

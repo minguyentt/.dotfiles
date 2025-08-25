@@ -2,7 +2,6 @@ return {
 	"hrsh7th/nvim-cmp",
 	lazy = false,
 	priority = 100,
-	event = "InsertEnter",
 	dependencies = {
 		"onsails/lspkind.nvim", -- vs-code like pictograms
 		"hrsh7th/cmp-nvim-lsp",
@@ -63,7 +62,7 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				["<C-y>"] = cmp.mapping(
 					cmp.mapping.confirm({
-                        behavior = cmp.ConfirmBehavior.Insert,
+						behavior = cmp.ConfirmBehavior.Insert,
 						select = true,
 					}),
 					{ "i", "c" }
@@ -76,7 +75,6 @@ return {
 				["<C-k>"] = cmp.mapping.select_prev_item({
 					behavior = cmp.ConfirmBehavior.Insert,
 				}),
-
 			}),
 			-- sources for autocompletion
 			sources = cmp.config.sources({
@@ -127,5 +125,22 @@ return {
 				{ name = "buffer" },
 			},
 		})
+
+		-- `/` cmdline setup.
+		-- cmp.setup.cmdline({ "/", "?" }, {
+		-- 	completion = { completeopt = "menu,menuone,noselect" },
+		-- 	sources = {
+		-- 		{ name = "buffer" },
+		-- 	},
+		-- })
+
+		-- `:` cmdline setup.
+		-- cmp.setup.cmdline(":", {
+		-- 	completion = { completeopt = "menu,menuone,noselect" },
+		-- 	sources = cmp.config.sources(
+		-- 		{ { name = "path" } },
+		-- 		{ { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } } }
+		-- 	),
+		-- })
 	end,
 }
